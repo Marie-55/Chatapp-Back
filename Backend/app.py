@@ -15,7 +15,7 @@ def create_app():
     app = Flask(__name__)
     
     # Enable CORS
-    CORS(app, origins=["http://localhost:5173"])
+    CORS(app, origins=["https://chatapp-back-97m4.onrender.com"])
     
     # Database configuration
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
@@ -39,7 +39,7 @@ if __name__ == '__main__':
     app = create_app()
     
     # Default port is 5000
-    port = int(os.getenv('PORT', 5000))
+    port = int(os.getenv('PORT', 10000))
     
     # Run the app
     app.run(host='0.0.0.0', port=port, debug=False)
