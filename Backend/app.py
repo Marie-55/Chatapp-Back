@@ -6,10 +6,16 @@ from dotenv import load_dotenv
 from src.routes.auth import auth_routes
 from src.routes.chatroom import chatroom_bp
 from flask_cors import CORS
+from flask import Blueprint
 
 
 # Load environment variables from var.env
 load_dotenv('var.env')
+app_routes = Blueprint('home', __name__)
+
+@app_routes.route('/')
+def home():
+    return "Backend is live! "
 
 def create_app():
     app = Flask(__name__)
