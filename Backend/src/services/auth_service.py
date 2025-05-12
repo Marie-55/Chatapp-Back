@@ -9,6 +9,7 @@ import os
 from dotenv import load_dotenv
 from src.utils.model_to_dict import model_to_dict
 from functools import wraps
+from flask import session
 
 load_dotenv('var.env')
 
@@ -43,6 +44,7 @@ class AuthService:
                  # add user to the database
                 db.session.add(new_user)
                 db.session.commit()
+
             except Exception as e:
                 db.session.rollback()
                 raise Exception(f"Database error: {str(e)}")
@@ -74,10 +76,16 @@ class AuthService:
             db.session.commit()
             # 2. Generate token if successful
             access,refresh = AuthService.generate_tokens(username)
+
+            #store the user id in session's current user to be accessed by other backend modeules
+            session['current_user'] = user.user_id
+
+            print(f"session is storing {session['current_user']} logged in successfully")
             
             return {
             "access_token": access,
             "refresh_token": refresh,
+            "public_key": public_key,
             "user": model_to_dict(user)
         }
         
@@ -112,7 +120,7 @@ class AuthService:
             {
                 "user_id": str(user_id),
                 "username": str(username),
-
+                "public_key": str(user.public_key),
                 "exp": datetime.utcnow() + timedelta(minutes=30),
                 "type": "access"
             },
@@ -133,6 +141,7 @@ class AuthService:
             {
                 "user_id": str(user_id),
                 "username": str(username),
+                "public_key": str(user.public_key),
                 "exp": datetime.utcnow() + timedelta(days=7),
                 "type": "refresh"
             },

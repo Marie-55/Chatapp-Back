@@ -7,6 +7,7 @@ from src.routes.auth import auth_routes
 from src.routes.chatroom import chatroom_bp
 from flask_cors import CORS
 
+
 # Load environment variables from var.env
 load_dotenv('var.env')
 
@@ -29,6 +30,8 @@ def create_app():
     # Register blueprints (routes)
     app.register_blueprint(auth_routes, url_prefix='/api/auth')
     app.register_blueprint(chatroom_bp, url_prefix='/api/chatroom')
+
+    
     
     return app
 

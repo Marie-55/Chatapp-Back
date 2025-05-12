@@ -12,6 +12,8 @@ from ..models.message import Message
 from ..models.user import User
 from passlib.hash import argon2
 
+from flask import session
+
 class ChatroomService:
     @staticmethod
     def create_chatroom(name, password, user_id):
@@ -45,7 +47,9 @@ class ChatroomService:
     
     @staticmethod
     def join_chatroom(chatroomName, password, user_id):
+        print(f"session user: {session['user_id']}")
         try:
+            print(f"session user: {session['user_id']}")
             chatroom = Chatroom.query.filter(
                 Chatroom.name == chatroomName).first()            
             if not chatroom:
