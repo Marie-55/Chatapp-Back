@@ -1,0 +1,33 @@
+from flask import Blueprint
+from ..controllers.chatroom_controller import ChatroomController
+from src.services.auth_service import token_required
+chatroom_bp = Blueprint('chatroom', __name__)
+
+# Define routes and connect them to controller methods
+@chatroom_bp.route('/create', methods=['POST'])
+def create_chatroom():
+    return ChatroomController.create_chatroom()
+
+@chatroom_bp.route('/join', methods=['POST'])
+@token_required
+def join_chatroom():
+    return ChatroomController.join_chatroom()
+
+@chatroom_bp.route('/<chatroom_id>/leave', methods=['POST'])
+@token_required
+def leave_chatroom(chatroom_id):
+    return ChatroomController.leave_chatroom(chatroom_id)
+
+@chatroom_bp.route('/<chatroom_id>/users', methods=['GET'])
+@token_required
+def get_chatroom_users(chatroom_id):
+    return ChatroomController.get_chatroom_users(chatroom_id)
+@chatroom_bp.route('/<chatroom_id>/kick_user', methods=['POST'])
+@token_required
+def kick_user_from_chatroom(chatroom_id):
+    return ChatroomController.kick_user_from_chatroom(chatroom_id)
+
+@chatroom_bp.route('/<chatroom_id>/delete', methods=['DELETE'])
+@token_required
+def delete_chatroom(chatroom_id):
+    return ChatroomController.delete_chatroom(chatroom_id)
