@@ -59,7 +59,15 @@ def create_app():
     app = Flask(__name__)
     
     # Enable CORS
-    CORS(app, origins=["https://chatapp-back-97m4.onrender.com"])
+    CORS(app, resources={
+        r"/api/*": {
+            "origins": [
+                "http://localhost:5173",      # Your local frontend
+                "https://your-frontend-url.com"  # Production frontend 
+            ],
+                "allow_headers": ["Content-Type", "Authorization"]
+        }
+    })
     
     # Database configuration
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
