@@ -36,6 +36,7 @@ def create_app():
     # Register blueprints (routes)
     app.register_blueprint(auth_routes, url_prefix='/api/auth')
     app.register_blueprint(chatroom_bp, url_prefix='/api/chatroom')
+    app.register_blueprint(app_routes, url_prefix='/api/')
 
     
     
