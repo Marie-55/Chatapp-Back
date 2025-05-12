@@ -1,5 +1,5 @@
 # backend/app.py
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template_string
 from Database.init import init_db
 import os
 from dotenv import load_dotenv
@@ -13,9 +13,47 @@ from flask import Blueprint
 load_dotenv('var.env')
 app_routes = Blueprint('home', __name__)
 
+# @app_routes.route('/')
+# def home():
+#     return "Backend is live! "
+
+
+
 @app_routes.route('/')
 def home():
-    return "Backend is live! "
+    return render_template_string('''
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Backend Status</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    text-align: center;
+                    margin-top: 100px;
+                    background-color: #f0f2f5;
+                }
+                h1 {
+                    color: #2c3e50;
+                }
+                .status {
+                    font-size: 24px;
+                    color: #27ae60;
+                    margin: 20px;
+                }
+            </style>
+        </head>
+        <body>
+            <h1>Flask Backend</h1>
+            <div class="status"> Backend is live!</div>
+            <p>Try these endpoints:</p>
+            <ul style="list-style: none; padding: 0;">
+                <li><a href="/api/auth">/api/auth</a></li>
+                <li><a href="/api/chatroom">/api/chatroom</a></li>
+            </ul>
+        </body>
+        </html>
+    ''')
 
 def create_app():
     app = Flask(__name__)
