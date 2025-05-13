@@ -61,7 +61,7 @@ def create_app():
     # Enable CORS
     CORS(app, resources={
         r"/api/*": {
-            "origins": true,
+            "origins": True,
                 "allow_headers": ["Content-Type", "Authorization"]
         }
     })
