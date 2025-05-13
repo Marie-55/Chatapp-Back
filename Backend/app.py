@@ -63,7 +63,7 @@ def create_app():
         r"/api/*": {
             "origins": "*",
             "methods" : ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-                "allow_headers": ["Content-Type", "Authorization"]
+                "allowed_headers": ["Content-Type", "Authorization"]
         }
     })
     
