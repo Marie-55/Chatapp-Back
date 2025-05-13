@@ -61,10 +61,7 @@ def create_app():
     # Enable CORS
     CORS(app, resources={
         r"/api/*": {
-            "origins": [
-                "http://localhost:5173",      # Your local frontend
-                "https://your-frontend-url.com"  # Production frontend 
-            ],
+            "origins": true,
                 "allow_headers": ["Content-Type", "Authorization"]
         }
     })
