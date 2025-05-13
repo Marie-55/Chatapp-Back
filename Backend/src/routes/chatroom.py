@@ -5,6 +5,7 @@ chatroom_bp = Blueprint('chatroom', __name__)
 
 # Define routes and connect them to controller methods
 @chatroom_bp.route('/create', methods=['POST'])
+@token_required
 def create_chatroom():
     return ChatroomController.create_chatroom()
 
@@ -31,3 +32,7 @@ def kick_user_from_chatroom(chatroom_id):
 @token_required
 def delete_chatroom(chatroom_id):
     return ChatroomController.delete_chatroom(chatroom_id)
+@chatroom_bp.route('/check_name', methods=['POST'])
+@token_required
+def check_chatroom_name():
+    return ChatroomController.check_chatroom_name()
