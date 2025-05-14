@@ -6,16 +6,16 @@ class ChatroomController:
     def create_chatroom():
         data = request.get_json()
 
-        if not data or 'name' not in data or 'password' not in data:
-            return jsonify({"success": False, "error": "Name and password are required"}), 400
+        if not data or 'chatroom_name' not in data or 'passcode' not in data:
+            return jsonify({"success": False, "error": "Chatroom name and passcode are required"}), 400
 
         user = session['current_user']
         user_id = user.user_id
         #user_id = "15929b81-65e5-4b6d-a1c4-771810a90625"
         if not user_id:
             return jsonify({"success": False, "error": "User ID is required"}), 400
-        name = data["name"]
-        password = data["password"]
+        name = data["chatroom_name"]
+        password = data["passcode"]
         result, status = ChatroomService.create_chatroom(name, password, user_id)
        
         if status == 201:
