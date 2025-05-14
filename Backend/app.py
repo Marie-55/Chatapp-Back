@@ -58,15 +58,10 @@ def home():
 def create_app():
     app = Flask(__name__)
     
-    # Enable CORS
-    # CORS(app, resources={
-    #     r"/api/*": {
-    #         "origins": "*",
-    #         "methods" : ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    #             "allowed_headers": ["Content-Type", "Authorization"]
-    #     }
-    # })
-    CORS(app)
+    CORS(app, resources={r"/api/*": {"origins": "*"}},
+     supports_credentials=True,
+     allow_headers=["Content-Type", "Authorization"],
+     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"])
     
     # Database configuration
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
