@@ -76,9 +76,6 @@ class AuthService:
             # 2. Generate token if successful
             access,refresh = AuthService.generate_tokens(username)
 
-           
-
-            print(f"session is storing {session['current_user']} logged in successfully")
             
             return {
             "access_token": access,
