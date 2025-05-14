@@ -14,7 +14,7 @@ def create_chatroom(current_user ):
 @token_required
 def join_chatroom(current_user):
     user_id = current_user
-    return ChatroomController.join_chatroom()
+    return ChatroomController.join_chatroom(user_id)
 
 @chatroom_bp.route('/<chatroom_id>/leave', methods=['POST'])
 @token_required
