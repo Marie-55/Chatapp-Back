@@ -3,13 +3,13 @@ from Database.init import db
 from datetime import datetime, timedelta
 from src.utils.Back_password_hash import ph
 from src.controllers.user_controller import UserController
-from flask import session, jsonify, request, make_response,g
+from flask import jsonify, request, make_response,g
 import jwt
 import os
 from dotenv import load_dotenv
 from src.utils.model_to_dict import model_to_dict
 from functools import wraps
-from flask import session
+
 
 load_dotenv('var.env')
 
@@ -78,8 +78,7 @@ class AuthService:
             # 2. Generate token if successful
             access,refresh = AuthService.generate_tokens(username)
 
-            #store the user id in session's current user to be accessed by other backend modeules
-            session['current_user'] = user.user_id
+           
 
             print(f"session is storing {session['current_user']} logged in successfully")
             
