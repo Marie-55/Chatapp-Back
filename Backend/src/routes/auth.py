@@ -18,10 +18,28 @@ def register():
             data.get('publicKey'),
             data.get('encrypted_private_key')
         )
+        result = auth.AuthService.login(
+            data.get('username'),
+            data.get('password')
+        )
+
+        response = make_response(jsonify({
+            "message": "Login successful",
+            "token": result['access_token'],  # Make sure this matches what frontend expects
+            "encrypted_private_key": result['user'].get('encrypted_private_key'),  # Add this line
+            "public_key": result['public_key'],  
+            "tokens": {
+                "access_token": result['access_token'],
+                "refresh_token": result['refresh_token'],
+                "user": result['user']
+            }
+        }),200)
+
+        return response
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    usr=model_to_dict(user)
-    return jsonify({"message": "User created", "user": usr}), 201
+    # usr=model_to_dict(user)
+    # return jsonify({"message": "User created", "user": usr}), 201
 
 @auth_routes.route('/login', methods=['POST'])
 def login():
@@ -38,6 +56,7 @@ def login():
             "message": "Login successful",
             "token": result['access_token'],  # Make sure this matches what frontend expects
             "encrypted_private_key": result['user'].get('encrypted_private_key'),  # Add this line
+            "public_key": result['public_key'],  
             "tokens": {
                 "access_token": result['access_token'],
                 "refresh_token": result['refresh_token'],

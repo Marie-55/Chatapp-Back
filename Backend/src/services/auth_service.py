@@ -46,13 +46,6 @@ class AuthService:
                 db.session.add(new_user)
                 db.session.commit()
 
-                login_response=AuthService.login(username,password)
-                if login_response:
-                    return login_response
-                else:
-                    raise Exception(f"No response from login")
-
-
             except Exception as e:
                 db.session.rollback()
                 raise Exception(f"Database error: {str(e)}")
