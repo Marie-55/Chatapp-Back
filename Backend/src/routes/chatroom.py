@@ -2,6 +2,7 @@ from flask import Blueprint
 from ..controllers.chatroom_controller import ChatroomController
 from src.services.auth_service import token_required
 from flask import request
+from flask_cors import cross_origin
 
 chatroom_bp = Blueprint('chatroom', __name__)
 
@@ -14,6 +15,7 @@ def create_chatroom(current_user ):
 
 @chatroom_bp.route('/join', methods=['POST','OPTIONS'])
 @token_required
+@cross_origin(origin='*', supports_credentials=True)
 def join_chatroom(current_user):
     user_id = current_user
     if request.method =='OPTIONS':
