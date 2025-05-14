@@ -18,8 +18,6 @@ class AuthService:
     def register_user(username, password, public_key, encrypted_private_key):
 
         """Register a new user"""
-        print(f"Method: {request.method}, URL: {request.url}")
-        print(f"username: {request.method}, URL: {request.url}")
         if not username or not password or not public_key or not encrypted_private_key:
             if not username: print("username is required")
             if not password: print("password is required")
