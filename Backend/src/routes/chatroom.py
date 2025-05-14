@@ -15,7 +15,7 @@ def create_chatroom(current_user ):
 
 @chatroom_bp.route('/join', methods=['POST','OPTIONS'])
 @token_required
-@cross_origin(origin='*', supports_credentials=True)
+@cross_origin(origin="*", supports_credentials=True)
 def join_chatroom(current_user):
     user_id = current_user
     if request.method =='OPTIONS':
