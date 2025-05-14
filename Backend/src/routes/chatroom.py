@@ -13,14 +13,10 @@ def create_chatroom(current_user ):
     user_id = current_user
     return ChatroomController.create_chatroom(user_id)
 
-@chatroom_bp.route('/join', methods=['POST','OPTIONS'])
+@chatroom_bp.route('/join', methods=['POST'])
 @token_required
-@cross_origin(origin="*", supports_credentials=True)
 def join_chatroom(current_user):
     user_id = current_user
-    if request.method =='OPTIONS':
-        print("inside method")
-        return '',200
     return ChatroomController.join_chatroom(user_id)
 
 @chatroom_bp.route('/<chatroom_id>/leave', methods=['POST'])
