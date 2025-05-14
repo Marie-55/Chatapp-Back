@@ -1,15 +1,16 @@
 from flask import Blueprint, g, json, request, jsonify, session
 from ..services.chatroom_service import ChatroomService
+import jwt 
 
 class ChatroomController:
     @staticmethod
-    def create_chatroom():
+    def create_chatroom(user_id):
         data = request.get_json()
 
         if not data or 'chatroom_name' not in data or 'passcode' not in data:
             return jsonify({"success": False, "error": "Chatroom name and passcode are required"}), 400
 
-        user_id = session['current_user']
+        
         #user_id = "15929b81-65e5-4b6d-a1c4-771810a90625"
         if not user_id:
             return jsonify({"success": False, "error": "User ID is required"}), 400

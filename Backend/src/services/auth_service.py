@@ -240,9 +240,10 @@ def token_required(f):
             if token_type != 'Bearer':
                 raise ValueError("Invalid token type")
             data = jwt.decode(token, os.getenv('SECRET_KEY'), algorithms=["HS256"])
-            g.data = data
+            current_user = data["user_id"]
+            
         except Exception as e:
             return jsonify({'error': str(e)}), 401
 
-        return f(*args, **kwargs)
+        return f(current_user,*args, **kwargs)
     return decorated

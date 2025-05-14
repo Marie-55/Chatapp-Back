@@ -6,8 +6,9 @@ chatroom_bp = Blueprint('chatroom', __name__)
 # Define routes and connect them to controller methods
 @chatroom_bp.route('/create', methods=['POST'])
 @token_required
-def create_chatroom():
-    return ChatroomController.create_chatroom()
+def create_chatroom(current_user ):
+    user_id = current_user
+    return ChatroomController.create_chatroom(user_id)
 
 @chatroom_bp.route('/join', methods=['POST'])
 @token_required
