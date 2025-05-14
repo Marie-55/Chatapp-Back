@@ -10,7 +10,7 @@ def create_chatroom(current_user ):
     user_id = current_user
     return ChatroomController.create_chatroom(user_id)
 
-@chatroom_bp.route('/join', methods=['POST'])
+@chatroom_bp.route('/join', methods=['POST','OPTIONS'])
 @token_required
 def join_chatroom(current_user):
     user_id = current_user
