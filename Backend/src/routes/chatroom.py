@@ -17,6 +17,7 @@ def create_chatroom(current_user ):
 def join_chatroom(current_user):
     user_id = current_user
     if request.method =='OPTIONS':
+        print("inside method")
         return '',200
     return ChatroomController.join_chatroom(user_id)
 
