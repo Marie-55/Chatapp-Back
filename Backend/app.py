@@ -92,4 +92,3 @@ if __name__ == '__main__':
     # Run the app
     app.run(host='0.0.0.0', port=port, debug=False)
 
-    "publicKey":"{'crv':'P-256','ext':true,'key_ops':[],'kty':'EC','x':'eUK5mGQnYl_U5nYxVDSITEJ2ix9EBCkxHOOpcZPbmiw','y':'PBmhd36cbuXzF26hwjD84F5vGE9mYIL1LD8tdnHMfNo'}",
