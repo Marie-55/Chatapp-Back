@@ -1,6 +1,8 @@
 from flask import Blueprint
 from ..controllers.chatroom_controller import ChatroomController
 from src.services.auth_service import token_required
+from flask import request
+
 chatroom_bp = Blueprint('chatroom', __name__)
 
 # Define routes and connect them to controller methods
@@ -14,6 +16,8 @@ def create_chatroom(current_user ):
 @token_required
 def join_chatroom(current_user):
     user_id = current_user
+    if request.method =='OPTIONS':
+        return '',200
     return ChatroomController.join_chatroom(user_id)
 
 @chatroom_bp.route('/<chatroom_id>/leave', methods=['POST'])
