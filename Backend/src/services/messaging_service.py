@@ -74,7 +74,7 @@ def register_message_handlers(socketio):
                 print(f"Sender not part of chatroom {chatroom_id}")
                 socketio.emit('error', {'error': 'Sender not part of chatroom'})
                 return
-            print(f"✅ Sender is part of chatroom {chatroom_id}")
+            print(f"Sender is part of chatroom {chatroom_id}")
 
             receiver = UserChatroom.query.filter(
                 UserChatroom.chatroom_id == chatroom_id,
@@ -113,7 +113,7 @@ def register_message_handlers(socketio):
                 'encrypted_content': encrypted_content,
                 'sender_pub': sender_pub,
                 'timestamp': timestamp.isoformat()
-            }, room=chatroom_id, include_self=False)
+            }, room=chatroom_id, include_self=True)
 
             print(f"Broadcasted message to chatroom {chatroom_id}")
 
