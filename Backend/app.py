@@ -18,7 +18,7 @@ app_routes = Blueprint('home', __name__)
 # @app_routes.route('/')
 # def home():
 #     return "Backend is live! "
-socketio = SocketIO(cors_allowed_origins="*")
+socketio = SocketIO(cors_allowed_origins="*",async_mode='eventlet',logger=True, engineio_logger=True)
 
 
 @app_routes.route('/')
@@ -97,4 +97,3 @@ if __name__ == '__main__':
     
     # Run the app
     socketio.run(app, host='0.0.0.0', port=port)
-
