@@ -47,7 +47,7 @@ def register_message_handlers(socketio):
     @socketio.on('join_room')
     def handle_join_room(data):
         """Handle client joining a room"""
-        chatroomId = data.get('chatroom_id')
+        chatroomId = data.get('chatroomId')
         if chatroomId:
             # Join the room identified by chatroomId
             print(f"User joined room: {chatroomId}")
