@@ -44,6 +44,18 @@ def get_chatroom_messages():
 
 
 def register_message_handlers(socketio):
+    @socketio.on('join_room')
+    def handle_join_room(data):
+        """Handle client joining a room"""
+        chatroomId = data.get('chatroom_id')
+        if chatroomId:
+            # Join the room identified by chatroomId
+            print(f"User joined room: {chatroomId}")
+            socketio.join_room(chatroomId)
+            socketio.emit('room_joined', {'room': chatroomId}, room=chatroomId)
+        else:
+            print("Missing chatroomId in join_room event")
+
     @socketio.on('send_message')
     def handle_send_message(data):
         print("="*40)
