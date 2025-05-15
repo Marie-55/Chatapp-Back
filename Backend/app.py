@@ -7,6 +7,8 @@ from src.routes.auth import auth_routes
 from src.routes.chatroom import chatroom_bp
 from flask_cors import CORS
 from flask import Blueprint
+from src.services.messaging_service import message_bp, register_message_handlers
+from flask_socketio import SocketIO
 
 
 # Load environment variables from var.env
@@ -16,7 +18,7 @@ app_routes = Blueprint('home', __name__)
 # @app_routes.route('/')
 # def home():
 #     return "Backend is live! "
-
+socketio = SocketIO(cors_allowed_origins="*")
 
 
 @app_routes.route('/')
@@ -77,8 +79,12 @@ def create_app():
     app.register_blueprint(auth_routes, url_prefix='/api/auth')
     app.register_blueprint(chatroom_bp, url_prefix='/api/chatroom')
     app.register_blueprint(app_routes, url_prefix='/api/')
+    app.register_blueprint(message_bp)
 
-    
+    socketio.init_app(app)
+
+    # Register WebSocket events
+    register_message_handlers(socketio)
     
     return app
 
@@ -90,5 +96,5 @@ if __name__ == '__main__':
     port = int(os.getenv('PORT', 10000))
     
     # Run the app
-    app.run(host='0.0.0.0', port=port, debug=False)
+    socketio.run(app, host='0.0.0.0', port=port)
 
