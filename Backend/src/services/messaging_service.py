@@ -81,6 +81,8 @@ def register_message_handlers(socketio):
             try:
                 db.session.commit()
                 print(f"Saved encrypted message from {sender.username} in chatroom {chatroom_id}")
+                message_id = str(message.message_id)
+                print("message id : ", message_id)
             except Exception as e:
                 print(f"Error committing to database: {e}")
                 socketio.emit('error', {'error': 'Failed to save message to database'})
@@ -89,6 +91,7 @@ def register_message_handlers(socketio):
             # Step 4: Broadcast to chatroom
             print(f"Attempting to broadcast message to chatroom {chatroom_id}")
             socketio.emit('receive_message', {
+                'id':message_id,
                 'chatroom': chatroom_id,
                 'sender': sender_id,
                 'encrypted_content': encrypted_content,
