@@ -51,7 +51,7 @@ def register_message_handlers(socketio):
         if chatroomId:
             # Join the room identified by chatroomId
             print(f"User joined room: {chatroomId}")
-            socketio.join_room(chatroomId)
+            join_room(chatroomId)
             socketio.emit('room_joined', {'room': chatroomId}, room=chatroomId)
         else:
             print("Missing chatroomId in join_room event")
