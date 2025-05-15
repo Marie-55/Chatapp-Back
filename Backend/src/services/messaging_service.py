@@ -46,52 +46,69 @@ def get_chatroom_messages():
 def register_message_handlers(socketio):
     @socketio.on('send_message')
     def handle_send_message(data):
+        print("="*40)
         print(f"Received message data: {data}")
+        print("="*40)
 
         try:
-            sender_id = data.get('sender_id')  # UUID for the sender
-            chatroom_id = data.get('chatroom_id')  # UUID for the chatroom
+            sender_id = data.get('sender_id')
+            chatroom_id = data.get('chatroom_id')
             encrypted_content = data.get('encrypted_content')
-            sender_pub = data.get('z_pub')  # Assuming 'sender_pub' corresponds to sender's public key
+            sender_pub = data.get('z_pub')
             timestamp = datetime.utcnow()
 
-            # Step 1: Validate sender
+            if not all([sender_id, chatroom_id, encrypted_content, sender_pub]):
+                print("Missing one or more required fields.")
+                socketio.emit('error', {'error': 'Missing required fields'})
+                return
+
             sender = User.query.filter_by(user_id=sender_id).first()
             if not sender:
+                print(f"Sender with ID {sender_id} not found.")
                 socketio.emit('error', {'error': 'Invalid sender'})
                 return
+            print(f"Sender {sender.username} validated.")
 
-            # Step 2: Validate chatroom (check if sender is part of the chatroom)
             user_chatroom = UserChatroom.query.filter_by(user_id=sender.user_id, chatroom_id=chatroom_id).first()
             if not user_chatroom:
+                print(f"Sender not part of chatroom {chatroom_id}")
                 socketio.emit('error', {'error': 'Sender not part of chatroom'})
                 return
+            print(f"✅ Sender is part of chatroom {chatroom_id}")
 
-            # Step 3: Save message
+            receiver = UserChatroom.query.filter(
+                UserChatroom.chatroom_id == chatroom_id,
+                UserChatroom.user_id != sender_id
+            ).first()
+
+            if receiver:
+                receiver_id = receiver.user_id
+                print(f"Found receiver: {receiver_id}")
+            else:
+                receiver_id = None
+                print("No specific receiver found (group chat or solo)")
+
             message = Message(
                 sender_id=sender.user_id,
-                receiver_id=user_chatroom.chatroom_id,  # Use chatroom_id from UserChatroom
+                receiver_id=receiver_id,
                 ciphertext=encrypted_content,
-                z_pub=sender_pub,  # sender's public key
+                z_pub=sender_pub,
                 timestamp=timestamp
             )
             db.session.add(message)
 
-            # Commit to the database and check if successful
             try:
                 db.session.commit()
-                print(f"Saved encrypted message from {sender.username} in chatroom {chatroom_id}")
-                message_id = str(message.message_id)
-                print("message id : ", message_id)
+                print(f"Message committed to DB with ID: {message.message_id}")
             except Exception as e:
-                print(f"Error committing to database: {e}")
+                print(f"DB commit failed: {e}")
+                import traceback
+                traceback.print_exc()
                 socketio.emit('error', {'error': 'Failed to save message to database'})
                 return
 
-            # Step 4: Broadcast to chatroom
-            print(f"Attempting to broadcast message to chatroom {chatroom_id}")
             socketio.emit('receive_message', {
-                'id':message_id,
+                'id': str(message.message_id),
                 'chatroom': chatroom_id,
                 'sender': sender_id,
                 'encrypted_content': encrypted_content,
@@ -102,5 +119,7 @@ def register_message_handlers(socketio):
             print(f"Broadcasted message to chatroom {chatroom_id}")
 
         except Exception as e:
-            print("Error handling message:", str(e))
+            import traceback
+            print("Exception during send_message:")
+            traceback.print_exc()
             socketio.emit('error', {'error': 'Internal server error'})
