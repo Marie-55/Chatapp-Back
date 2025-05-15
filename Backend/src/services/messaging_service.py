@@ -94,7 +94,7 @@ def register_message_handlers(socketio):
             ).first()
 
             if receiver:
-                receiver_id = receiver.user_id
+                receiver_id = receiver.chatroom_id
                 print(f"Found receiver: {receiver_id}")
             else:
                 receiver_id = None
