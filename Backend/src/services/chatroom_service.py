@@ -47,9 +47,7 @@ class ChatroomService:
     
     @staticmethod
     def join_chatroom(chatroomName, password, user_id):
-        print(f"session user: {session['user_id']}")
         try:
-            print(f"session user: {session['user_id']}")
             chatroom = Chatroom.query.filter(
                 Chatroom.name == chatroomName).first()            
             if not chatroom:
