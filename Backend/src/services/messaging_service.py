@@ -99,7 +99,7 @@ def register_message_handlers(socketio):
 
             try:
                 db.session.commit()
-                print(f"Message committed to DB with ID: {message.message_id}")
+                print(f"Message committed to DB with ID: {message}")
             except Exception as e:
                 print(f"DB commit failed: {e}")
                 import traceback
@@ -108,7 +108,6 @@ def register_message_handlers(socketio):
                 return
 
             socketio.emit('receive_message', {
-                'id': str(message.message_id),
                 'chatroom': chatroom_id,
                 'sender': sender_id,
                 'encrypted_content': encrypted_content,
