@@ -102,7 +102,7 @@ def register_message_handlers(socketio):
 
             message = Message(
                 sender_id=sender.user_id,
-                receiver_id=receiver_id,
+                receiver_id=chatroom_id,
                 ciphertext=encrypted_content,
                 z_pub=sender_pub,
                 timestamp=timestamp
