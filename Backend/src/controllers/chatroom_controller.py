@@ -48,7 +48,7 @@ class ChatroomController:
                 return jsonify({
                     "success": True, 
                     "message": "joined successfully",
-                    "chatroom_id" : result['chatroom_id']
+                    "chatroom_id" : result["chatroom_id"]
                 }), status
         else:
             return jsonify({"success": False, "error": result}), status
