@@ -34,10 +34,11 @@ def get_chatroom_messages():
     messages_data = []
     for msg in messages:
         messages_data.append({
-            'sender': msg.sender.username if msg.sender else 'Unknown',
+            'sender_id': msg.sender_id ,
             'encrypted_content': msg.ciphertext,
             'z_pub': msg.z_pub,
-            'timestamp': msg.timestamp.isoformat()
+            'timestamp': msg.timestamp.isoformat(),
+            'username':msg.username
         })
 
     return jsonify({'messages': messages_data}), 200
@@ -68,8 +69,9 @@ def register_message_handlers(socketio):
             encrypted_content = data.get('encrypted_content')
             sender_pub = data.get('z_pub')
             timestamp = datetime.utcnow()
+            username = data.get('username')
 
-            if not all([sender_id, chatroom_id, encrypted_content, sender_pub]):
+            if not all([sender_id, chatroom_id, encrypted_content, sender_pub,username]):
                 print("Missing one or more required fields.")
                 socketio.emit('error', {'error': 'Missing required fields'})
                 return
@@ -105,7 +107,8 @@ def register_message_handlers(socketio):
                 receiver_id=chatroom_id,
                 ciphertext=encrypted_content,
                 z_pub=sender_pub,
-                timestamp=timestamp
+                timestamp=timestamp,
+                username = username
             )
             db.session.add(message)
 
@@ -124,7 +127,8 @@ def register_message_handlers(socketio):
                 'sender': sender_id,
                 'encrypted_content': encrypted_content,
                 'sender_pub': sender_pub,
-                'timestamp': timestamp.isoformat()
+                'timestamp': timestamp.isoformat(),
+                'username':username
             }, room=chatroom_id, include_self=True)
 
             print(f"Broadcasted message to chatroom {chatroom_id}")

@@ -11,6 +11,7 @@ class Message(db.Model):
     ciphertext = Column(String(2048), nullable=False)
     z_pub = Column(String(512), nullable=False , name='sender_pub')  # sender public key
     timestamp = Column(DateTime, default=datetime.utcnow)
+    username = Column(String(50), nullable=False)
 
     def __repr__(self):
         return f'<Message {self.id} from {self.sender_id}>'
