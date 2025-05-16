@@ -74,6 +74,7 @@ class ChatroomService:
             db.session.add(membership)
             db.session.commit()
             
+            print("chatroom.id =======================", chatroom.id)
             return {"chatroom_id": chatroom.id} , 200
         except Exception as e:
             db.session.rollback()
