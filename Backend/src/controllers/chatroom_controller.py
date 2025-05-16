@@ -47,7 +47,8 @@ class ChatroomController:
         if status == 200:
                 return jsonify({
                     "success": True, 
-                    "message": "joined successfully"
+                    "message": "joined successfully",
+                    "chatroom_id" : result['chatroom_id']
                 }), status
         else:
             return jsonify({"success": False, "error": result}), status
@@ -138,6 +139,19 @@ class ChatroomController:
                 return jsonify({
                     "success": True, 
                     "message": "Chatroom name is available"
+                }), status
+        else:
+            return jsonify({"success": False, "error": result}), status
+    @staticmethod
+    def get_user_chatrooms(user_id):
+        if not user_id:
+            return jsonify({"success": False, "error": "User ID is required"}), 400
+        result, status = ChatroomService.get_user_chatrooms(user_id)
+       
+        if status == 200:
+                return jsonify({
+                    "success": True, 
+                    "chatrooms": result
                 }), status
         else:
             return jsonify({"success": False, "error": result}), status

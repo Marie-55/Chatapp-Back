@@ -45,3 +45,8 @@ def delete_chatroom(chatroom_id,current_user):
 @token_required
 def check_chatroom_name():
     return ChatroomController.check_chatroom_name()
+@chatroom_bp.route('/my_chatrooms', methods=['GET'])
+@token_required
+def get_user_chatrooms(current_user):
+    user_id = current_user
+    return ChatroomController.get_user_chatrooms(user_id)

@@ -74,7 +74,7 @@ class ChatroomService:
             db.session.add(membership)
             db.session.commit()
             
-            return {"success": True} , 200
+            return {"chatroom_id": chatroom.id} , 200
         except Exception as e:
             db.session.rollback()
             return str(e) , 500
@@ -184,4 +184,23 @@ class ChatroomService:
         
         except Exception as e:
             db.session.rollback()
+            return str(e), 500
+    @staticmethod
+    def get_user_chatrooms(user_id):
+        try:
+            chatrooms = db.session.query(Chatroom).join(
+                UserChatroom, Chatroom.id == UserChatroom.chatroom_id
+            ).filter(
+                UserChatroom.user_id == user_id
+            ).all()
+            
+            chatroom_list = [{
+                "id": chatroom.id,
+                "name": chatroom.name,
+                "created_by": chatroom.created_by,
+                "created_at": chatroom.created_at,
+            } for chatroom in chatrooms]
+            
+            return chatroom_list, 200
+        except Exception as e:
             return str(e), 500
